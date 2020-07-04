@@ -1,0 +1,32 @@
+{
+  "name": "tictactoemultiplayergame",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe Multiplayer Game using Socket.io",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Tic",
+    "Tac",
+    "Toe",
+    "Socket",
+    "Multiplayer",
+    "Socket.io",
+    "Node",
+    "Node.js"
+  ],
+  "author": "Scarecrow",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "shortid": "^2.2.15",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "engines": {
+    "node": "12.16.1"
+  }
+}

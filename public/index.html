@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS Links -->
+    <link rel="stylesheet" type="text/css" href="./vendors/bootstrap/css/bootstrap.min.css">
+
+    <!-- Local CSS Links -->
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+
+    <title>Tic Tac Toe Multiplayer</title>
+</head>
+<body>
+    <div class="container-fluid" id="body-container">
+        <div class="container d-flex flex-column align-items-center justify-content-center" id="canvas-container">
+            <canvas id="game-canvas" width="510" height="510" style="border: 2px solid teal;"></canvas>
+
+            <!-- Room Input Form -->
+            <span id="room-input-form">
+                <input id="room-input" type="text" placeholder="Enter Room...">
+                <button id="room-submit-button" type="submit">Join</button>
+                <button id="room-input-cancel-button" type="reset">Cancel</button>
+            </span>
+
+            <!-- Room ID Box -->
+            <input id="room-id-box" type="text" value="">
+
+            <!-- Back To Lobby Button -->
+            <button id="back-to-lobby-button" type="button">Back to Lobby</button>
+
+            <!-- Leave Game Button -->
+            <button id="leave-game-button" type="button">Leave Game</button>
+            
+            <!-- The Toast snackbar -->
+            <div id="snackbar"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Links -->
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

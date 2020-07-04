@@ -4,8 +4,7 @@
   "description": "Tic Tac Toe Multiplayer Game using Socket.io",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.js"
   },
   "keywords": [
     "Tic",

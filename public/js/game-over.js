@@ -1,4 +1,4 @@
-import { emitGoBackToLobby } from './main.js'
+import { emitGoBackToLobby, emitRestartGameRequest } from './main.js'
 
 export function drawGameOver(message) {
     // Get Canvas Refs
@@ -24,14 +24,31 @@ function setGameOverItems(canvas, ctx, message) {
     ctx.textBaseline = 'middle'
     ctx.fillText(message, (canvas.width/2), (canvas.height/2))
 
+    // Restart Game Button
+    let restartGameButton = document.getElementById('restart-game-button')
     // Back To Lobby Button
     let backToLobbyButton = document.getElementById('back-to-lobby-button')
-    backToLobbyButton.style.display = 'block'
+
+    // If Opponent Left Handle Block
+    if(message === 'Opponent Left. You Won :-)') {
+        backToLobbyButton.style.display = 'block'
+    } else {
+        restartGameButton.style.display = 'block'
+        backToLobbyButton.style.display = 'inline'
+    }
 
     // Hide Leave Game
     document.getElementById('leave-game-button').style.display = 'none'
 
     // Add Event Listener
+
+    // Restart Game
+    restartGameButton.onclick = function() {
+        // Emit Restart Game Event To Server
+        emitRestartGameRequest()
+    }
+
+    // Back To Lobby
     backToLobbyButton.onclick = function() {
         // Get Back To Lobby
         // Emit 'go-back-to-lobby' Event

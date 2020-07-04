@@ -16,6 +16,7 @@ export function resetCanvas () {
     document.getElementById('room-id-box').style.display = 'none'
     document.getElementById('back-to-lobby-button').style.display = 'none'
     document.getElementById('leave-game-button').style.display = 'none'
+    document.getElementById('restart-game-button').style.display = 'none'
 
     // Return New Canvas Refs
     return {

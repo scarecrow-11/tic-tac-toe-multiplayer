@@ -1,9 +1,13 @@
 const { removeGameRoom } = require('../socket/roomManager')
+const { generateRandomTurn } = require('../utils/serverUtils')
 
 // Start Game Function
 function startGame(socket, gameRoom) {
     // Initiate New Game for the Game Room
-    gameRoom.initiateGame('X')
+
+    // Generate Random turn
+    let turn = generateRandomTurn()
+    gameRoom.initiateGame(turn)
 
     // Assign Player X and Player O
     gameRoom.game.assignPlayers(gameRoom.players)
@@ -13,8 +17,8 @@ function startGame(socket, gameRoom) {
     socket.to(gameRoom.roomID).emit('draw-game')
 
     // Emit Game Info
-    socket.emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Yours' })
-    socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Opponent\'s' })
+    updateGameInfo(socket, gameRoom)
+    
 
     // Start Timer
     startTimer(socket, gameRoom)
@@ -61,22 +65,15 @@ function updateGameState(socket, gameRoom, cellCoordinates) {
                 socket.to(gameRoom.roomID).emit('game-over', 'You Lost :-(')
             }
 
-            // Remove Game Room Object From Active Rooms List
-            removeGameRoom(gameRoom.roomID)
+            // Reset Game Object 
+            gameRoom.resetGame()
             
         } else {
             // Toggle Turn
             game.toggleTurn()
 
-            // Send Game Status Info
-            if(game.turn === 'X') {
-                socket.emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Opponent\'s' })
-                socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Your' })
-                
-            } else if(game.turn === 'O') {
-                socket.emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Opponent\'s' })
-                socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Your' })
-            }
+            // Update Game Status Info
+            updateGameInfo(socket, gameRoom)
 
             // Set Move Timer
             startTimer(socket, gameRoom)
@@ -132,6 +129,28 @@ function startTimer(socket, gameRoom) {
         game.moveTimeLeft--
 
     }, 1000)
+}
+
+function updateGameInfo(socket, gameRoom) {
+    let { game } = gameRoom
+
+    // Emit Game Info
+    if(game.turn === 'X' && socket.id === game.playerX) {
+        socket.emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Yours' })
+        socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Opponent\'s' })
+
+    } else if(game.turn === 'O' && socket.id === game.playerO) {
+        socket.emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Yours' })
+        socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Opponent\'s' })
+
+    } else if(game.turn === 'X' && socket.id === game.playerO) {
+        socket.emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Opponent\'s' })
+        socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Yours' })
+
+    } else if(game.turn === 'O' && socket.id === game.playerX) {
+        socket.emit('draw-game-info', { playerX: 'You', playerO: 'Opponent', turn: 'Opponent\'s' })
+        socket.to(gameRoom.roomID).emit('draw-game-info', { playerX: 'Opponent', playerO: 'You', turn: 'Yours' })
+    }
 }
 
 // Export Stuff Here

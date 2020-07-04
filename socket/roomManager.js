@@ -1,5 +1,7 @@
 const shortid = require('shortid')
 const GameRoom = require('./GameRoom')
+const { generateRandomTurn } = require('../utils/serverUtils')
+const { startGame } = require('../game/gameEngine')
 
 // Active Rooms List
 let activeGameRooms = []
@@ -103,7 +105,7 @@ function cancelGameRoom(socket, gameRoom, io) {
     // Emit 'Opponent Left' message to Opponent
     if(opponent) {
         socket.to(gameRoom.roomID).emit('message', 'Opponent has left. Going back to Lobby...')
-        socket.to(gameRoom.roomID).emit('game-over', 'You Won :-)')
+        socket.to(gameRoom.roomID).emit('game-over', 'Opponent Left. You Won :-)')
     }
 
     // Destroy GameRoom Object From activeGameRooms
@@ -153,5 +155,14 @@ function removeGameRoom(roomID) {
     activeGameRooms = activeGameRooms.filter(item => item.roomID !== roomID)
 }
 
+// Restart Game in the existing Room
+function restartGame(socket ,gameRoom) {
+    // Reset game object to null
+    gameRoom.resetGame()
+
+    // Start Game
+    startGame(socket, gameRoom)
+}
+
 // Export Stuff
-module.exports = { joinLobby, createGameRoom, joinGameRoom, cancelGameRoom, removeGameRoom }
+module.exports = { joinLobby, createGameRoom, joinGameRoom, cancelGameRoom, removeGameRoom, restartGame }

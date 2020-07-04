@@ -79,6 +79,18 @@ socket.on('clear-time-left', () => {
     clearTimeLeft()
 })
 
+// On 'confirm-restart-request' from server if opponent requset restart game
+socket.on('confirm-restart-request', () => {
+    // Display Confirmation Promt
+    let confirmation = confirm('Opponent wants a rematch. Do you accept?')
+    if(confirmation) {
+        // Emit Restart Game Event
+        emitRestartGame()
+    } else {
+        // Pass
+    }
+})
+
 ///////////////
 // Functions //
 ///////////////
@@ -112,4 +124,16 @@ export function emiCellCoordinates(cellCoordinates) {
 export function emitGoBackToLobby() {
     // Emit 'go-back-to-lobby' Event
     socket.emit('go-back-to-lobby')
+}
+
+// Emit Restart Game Request to Server for Opponent to confirm
+export function emitRestartGameRequest() {
+    // Emit 'restart-game-request' to Server
+    socket.emit('restart-game-request')
+}
+
+// Emit Restart Game Event to Server
+function emitRestartGame() {
+    // Emit 'restart-game' Event
+    socket.emit('restart-game')
 }

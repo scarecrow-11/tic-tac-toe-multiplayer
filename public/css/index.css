@@ -106,12 +106,18 @@ button:hover {
     }
 }
 
-/* back To Lobby Button */
-#back-to-lobby-button {
-    display: none;
-}
-
 /* Leave Game Button */
 #leave-game-button {
     display: none;
+}
+
+/* Restart Game Button */
+#restart-game-button {
+    display: none;
+}
+
+/* back To Lobby Button */
+#back-to-lobby-button {
+    display: none;
+    margin-left: 10px;
 }

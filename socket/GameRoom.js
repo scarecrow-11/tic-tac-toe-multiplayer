@@ -14,4 +14,10 @@ module.exports = class GameRoom {
     initiateGame(turn) {
         this.game = new Game(turn)
     }
+
+    resetGame() {
+        if(this.game !== null) {
+            this.game = null
+        }
+    }
 }

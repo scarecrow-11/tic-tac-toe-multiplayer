@@ -5,7 +5,7 @@ const socketIO = require('socket.io')
 const bodyParser = require('body-parser')
 
 // Import Local Libraries
-const { joinLobby, createGameRoom, joinGameRoom, cancelGameRoom } = require('./socket/roomManager')
+const { joinLobby, createGameRoom, joinGameRoom, cancelGameRoom, restartGame } = require('./socket/roomManager')
 const { startGame, updateGameState } = require('./game/gameEngine')
 
 // Create Express App
@@ -59,6 +59,17 @@ io.on('connection', socket => {
     socket.on('cell-clicked', cellCoordinates => {
         // Update Game State (Handles Error Inside)
         updateGameState(socket, gameRoom, cellCoordinates)
+    })
+
+    // On 'restart-game-request' from Player
+    socket.on('restart-game-request', () => {
+        // Emit 'confirm-restart-request' to Opponent
+        socket.to(gameRoom.roomID).emit('confirm-restart-request')
+    })
+ 
+    // On 'restart-game' Event From Player after Game Over
+    socket.on('restart-game', () => {
+        restartGame(socket, gameRoom)
     })
 
     // On 'go-back-to-lobby' Event From Game Over

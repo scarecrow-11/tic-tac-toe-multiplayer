@@ -2,13 +2,6 @@
     margin-top: 30px;
 }
 
-@media only screen and (max-width: 768px) {
-    #game-canvas {
-        width: 100%;
-        height: auto;
-    }    
-}
-
 button {
     margin-top: 10px;
     margin-bottom: 10px;
